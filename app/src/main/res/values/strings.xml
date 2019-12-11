@@ -4,7 +4,7 @@
     <string name="settings">Settings</string>
     <string name="home">Home</string>
     <string name="hintForInput">Введите сообщение тут…</string>
-    <string name="copy">Скопировать</string>
+    <string name="copy">Копировать</string>
     <string name="successCopied">Перевод скопирован в буфер обмена</string>
     <string name="reverseTranslate">Обратный перевод</string>
     <string name="share">Поделиться</string>
