@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MorseDecoder</string>
+    <string name="DEFAULT_ERROR">Error</string>
+    <string name="ERROR_FLASH">Smartphone doesn`t support flashlight!</string>
+    <string name="Enable_night_mode">Enable dark mode</string>
+    <string name="Night_mode">Dark mode</string>
+    <string name="copy">Copy</string>
+    <string name="giveSignal">Send signal</string>
+    <string name="hintForInput">Type your message here…</string>
+    <string name="home">Home</string>
+    <string name="message_request_failed">Message isn`t present!</string>
+    <string name="okey">OK</string>
+    <string name="reverseTranslate">Reverse translate</string>
+    <string name="settings">Settings</string>
+    <string name="settings_icon">Setting`s icon</string>
+    <string name="share">Share</string>
+    <string name="signal">Signal</string>
+    <string name="sos">SOS</string>
+    <string name="sos_signal_international">… --- …</string>
+    <string name="successCopied">Translation has been copied</string>
+    <string name="Stay_turned">Stay turned on</string>
+    <string name="Stay_send_signal_after_block">Keep on sending signals after screen lock</string>
+</resources>

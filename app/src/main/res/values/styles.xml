@@ -1,0 +1,79 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="ThemeLight" parent="Theme.AppCompat.Light.DarkActionBar">
+
+
+        <item name="colorPrimary">@color/brightBlue</item>
+        <item name="colorPrimaryDark">@color/brightBlue</item>
+        <item name="colorAccent">@color/grey</item>
+
+        <item name="android:windowBackground">@color/white</item>
+        <item name="topPanelBackgroundColor">@color/white</item>
+        <item name="translateCardBackgroundColor">@color/brightBlue</item>
+        <item name="otherCardsBackgroundColor">@color/white</item>
+        <item name="spinnerDropdownArrowColor">@color/brightBlue</item>
+
+        <item name="primaryTextColor">@color/black</item>
+        <item name="secondaryTextColor">@color/brightBlue</item>
+        <item name="hintTextColor">@android:color/tertiary_text_dark</item>
+
+        <item name="iconSOSPlaceholder">@drawable/ic_circle_blue_144dp</item>
+        <item name="iconMessagePlaceholder">@drawable/ic_mail_blue_144dp</item>
+        <item name="iconPowerPlaceholder">@drawable/ic_power_blue_144dp</item>
+        <item name="iconBrightnessPlaceholder">@drawable/ic_brightness_black_50dp</item>
+        <item name="iconBulbPlaceholder">@drawable/ic_lightbulb_black_50dp</item>
+        <item name="iconArrowPlaceholder">@drawable/ic_arrowright_blue_24dp</item>
+        <item name="iconSwapPlaceholder">@drawable/ic_swap_48dp</item>
+        <item name="iconClosePlaceholder">@drawable/ic_close_black_24dp</item>
+
+
+    </style>
+
+    <style name="ThemeDark" parent="Theme.AppCompat.Light.DarkActionBar">
+
+
+        <item name="android:toolbarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="colorPrimary">@color/lightDark</item>
+        <item name="colorPrimaryDark">@color/lightDark</item>
+        <item name="colorAccent">@android:color/holo_orange_light</item>
+
+        <item name="android:windowBackground">@color/deepDark</item>
+        <item name="topPanelBackgroundColor">@color/lightDark</item>
+        <item name="translateCardBackgroundColor">@color/lightDark</item>
+        <item name="otherCardsBackgroundColor">@color/lightDark</item>
+        <item name="spinnerDropdownArrowColor">@color/white</item>
+
+        <item name="primaryTextColor">@color/white</item>
+        <item name="secondaryTextColor">@color/white</item>
+        <item name="hintTextColor">@android:color/tertiary_text_dark</item>
+
+        <item name="iconSOSPlaceholder">@drawable/ic_circle_dark_144dp</item>
+        <item name="iconMessagePlaceholder">@drawable/ic_mail_dark_144dp</item>
+        <item name="iconPowerPlaceholder">@drawable/ic_power_dark_144dp</item>
+        <item name="iconBrightnessPlaceholder">@drawable/ic_brightness_white_50dp</item>
+        <item name="iconBulbPlaceholder">@drawable/ic_lightbulb_white_50dp</item>
+        <item name="iconArrowPlaceholder">@drawable/ic_arrowright_white_24dp</item>
+        <item name="iconSwapPlaceholder">@drawable/ic_swap_white_48dp</item>
+        <item name="iconClosePlaceholder">@drawable/ic_close_white_24dp</item>
+    </style>
+
+    <declare-styleable name="CTAppTheme">
+        <attr name="primaryTextColor" format="color"/>
+        <attr name="secondaryTextColor" format="color"/>
+        <attr name="hintTextColor" format="color"/>
+        <attr name="translateCardBackgroundColor" format="color"/>
+        <attr name="otherCardsBackgroundColor" format="color"/>
+        <attr name="topPanelBackgroundColor" format="color"/>
+        <attr name="iconSOSPlaceholder" format="integer"/>
+        <attr name="iconPowerPlaceholder" format="integer"/>
+        <attr name="iconMessagePlaceholder" format="integer"/>
+        <attr name="iconBrightnessPlaceholder" format="integer"/>
+        <attr name="iconBulbPlaceholder" format="integer"/>
+        <attr name="iconArrowPlaceholder" format="integer"/>
+        <attr name="iconSwapPlaceholder" format="integer"/>
+        <attr name="iconClosePlaceholder" format="integer"/>
+        <attr name="spinnerDropdownArrowColor" format="color"/>
+    </declare-styleable>
+
+</resources>

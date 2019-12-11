@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">MorseDecoder</string>
+    <string name="signal">Signal</string>
+    <string name="settings">Settings</string>
+    <string name="home">Home</string>
+    <string name="hintForInput">Введите сообщение тут…</string>
+    <string name="copy">Скопировать</string>
+    <string name="successCopied">Перевод скопирован в буфер обмена</string>
+    <string name="reverseTranslate">Обратный перевод</string>
+    <string name="share">Поделиться</string>
+    <string name="giveSignal">Подать сигнал</string>
+    <string name="sos">SOS</string>
+    <string name="ERROR_FLASH">На телефоне отстуствует вспышка!</string>
+    <string name="DEFAULT_ERROR">Ошибка!</string>
+    <string name="okey">OK</string>
+    <string name="sos_signal_international">… --- …</string>
+    <string name="settings_icon">Иконка настроек</string>
+    <string name="Night_mode">Ночной режим</string>
+    <string name="Stay_turned">Оставлять активным</string>
+    <string name="Enable_night_mode">Включить ночной режим</string>
+    <string name="Stay_send_signal_after_block">Продолжать подавать сигнал после блокировки экрана</string>
+    <string name="message_request_failed">Сообщение отсутствует!</string>
+
+    <string-array name="Languages">
+        <item>Morse</item>
+        <item>English</item>
+        <item>Russian</item>
+    </string-array>
+
+</resources>
