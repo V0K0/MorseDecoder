@@ -1,8 +1,7 @@
-package com.morsedecoder.UI.Activities;
+package com.morsedecoder.UI.Activities.Main;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -13,13 +12,13 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.morsedecoder.UI.Fragments.HomeFragment;
-import com.morsedecoder.UI.Fragments.SettingsFragment;
-import com.morsedecoder.UI.Fragments.SignalFragment;
+import com.morsedecoder.HelpClasses.UserDialogs;
+import com.morsedecoder.UI.Fragments.Home.HomeFragment;
+import com.morsedecoder.UI.Fragments.Settings.SettingsFragment;
+import com.morsedecoder.UI.Fragments.Signal.SignalFragment;
 import com.morsedecoder.R;
 
 
@@ -61,10 +60,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnSe
         fm.beginTransaction().add(R.id.Linear_container, fragmentSettings, "3").hide(fragmentSettings).commit();
         fm.beginTransaction().add(R.id.Linear_container, fragmentSignal, "2").hide(fragmentSignal).commit();
         fm.beginTransaction().add(R.id.Linear_container, fragmentHome, "1").commit();
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
-        }
+
+        UserDialogs.checkCameraPermission(this);
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = menuItem -> {

@@ -15,7 +15,7 @@
         android:theme="@style/ThemeLight"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".UI.Activities.MainActivity"
+            android:name=".UI.Activities.Main.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             tools:ignore="InnerclassSeparator">

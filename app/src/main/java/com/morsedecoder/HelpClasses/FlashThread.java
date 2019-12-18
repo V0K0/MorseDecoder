@@ -36,7 +36,6 @@ public class FlashThread extends Thread {
     }
 
     private void switchLight() {
-
         for (char[] letter : morseLetters) {
             for (char symbol : letter) {
                 {

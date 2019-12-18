@@ -1,4 +1,4 @@
-package com.morsedecoder.UI.Fragments;
+package com.morsedecoder.UI.Fragments.Signal;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.morsedecoder.Domain.Flashlight;
+import com.morsedecoder.HelpClasses.UserDialogs;
 import com.morsedecoder.R;
 
 import java.util.Objects;
@@ -25,12 +26,11 @@ public class SignalFragment extends Fragment {
     private ImageView imageViewSOS;
     private ImageView imageViewPower;
     private ImageView imageViewMessage;
-    private boolean isActive = false;
-    private int powerDefaultIconRes;
-
+    private BottomNavigationView bottomMenu;
     private OnSendRequest onSendRequest;
 
-    private BottomNavigationView bottomMenu;
+    private boolean isActive = false;
+    private int powerDefaultIconRes;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class SignalFragment extends Fragment {
             imageViewPower.setImageResource(R.drawable.ic_power_off_144dp);
             boolean hasFlash = getActivity().getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
             if (!hasFlash) {
-                showAlert();
+                UserDialogs.ShowAlertDialog(getContext(), getString(R.string.ERROR_FLASH));
             } else {
                 Flashlight.getInstance().sendSignal(msg);
             }
@@ -98,21 +98,12 @@ public class SignalFragment extends Fragment {
             imageViewPower.setImageResource(R.drawable.ic_power_off_144dp);
             boolean hasFlash = getActivity().getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
             if (!hasFlash) {
-                showAlert();
+                UserDialogs.ShowAlertDialog(getContext(), getString(R.string.ERROR_FLASH));
             } else {
                 Flashlight.getInstance().sendSignal("... --- ...");
             }
         }
     };
-
-    private void showAlert() {
-        new AlertDialog.Builder(getContext()).setTitle(getString(R.string.DEFAULT_ERROR))
-                .setMessage(getString(R.string.ERROR_FLASH))
-                .setPositiveButton(getString(R.string.okey), (dialog, which) -> {
-
-                });
-
-    }
 
     private void stopWork() {
         isActive = false;
@@ -127,6 +118,4 @@ public class SignalFragment extends Fragment {
             stopWork();
         }
     }
-
-
 }

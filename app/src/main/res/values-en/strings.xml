@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MorseDecoder</string>
-    <string name="DEFAULT_ERROR">Error</string>
+    <string name="DEFAULT_ERROR">Error !</string>
     <string name="ERROR_FLASH">Smartphone doesn`t support flashlight!</string>
     <string name="Enable_night_mode">Enable dark mode</string>
     <string name="Night_mode">Dark mode</string>
@@ -21,4 +21,5 @@
     <string name="successCopied">Translation has been copied</string>
     <string name="Stay_turned">Stay turned on</string>
     <string name="Stay_send_signal_after_block">Keep on sending signals after screen lock</string>
+    <string name="share_through">Share through:</string>
 </resources>

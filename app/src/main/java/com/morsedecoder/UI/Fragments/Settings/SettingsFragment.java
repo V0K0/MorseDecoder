@@ -1,4 +1,4 @@
-package com.morsedecoder.UI.Fragments;
+package com.morsedecoder.UI.Fragments.Settings;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.morsedecoder.R;
-import com.morsedecoder.UI.Activities.MainActivity;
+import com.morsedecoder.UI.Activities.Main.MainActivity;
 
 import java.util.Objects;
 
