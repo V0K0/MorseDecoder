@@ -25,6 +25,8 @@
         <item name="iconBulbPlaceholder">@drawable/ic_lightbulb_black_50dp</item>
         <item name="iconArrowPlaceholder">@drawable/ic_arrowright_blue_24dp</item>
         <item name="iconSwapPlaceholder">@drawable/ic_swap_48dp</item>
+        <item name="iconStarWithBorder">@drawable/ic_star_border_black_40dp</item>
+        <item name="iconStarFilled">@drawable/ic_star_yellow_40dp</item>
         <item name="iconClosePlaceholder">@drawable/ic_close_black_24dp</item>
 
 
@@ -55,25 +57,29 @@
         <item name="iconBulbPlaceholder">@drawable/ic_lightbulb_white_50dp</item>
         <item name="iconArrowPlaceholder">@drawable/ic_arrowright_white_24dp</item>
         <item name="iconSwapPlaceholder">@drawable/ic_swap_white_48dp</item>
+        <item name="iconStarWithBorder">@drawable/ic_star_border_white_40dp</item>
+        <item name="iconStarFilled">@drawable/ic_star_yellow_40dp</item>
         <item name="iconClosePlaceholder">@drawable/ic_close_white_24dp</item>
     </style>
 
     <declare-styleable name="CTAppTheme">
-        <attr name="primaryTextColor" format="color"/>
-        <attr name="secondaryTextColor" format="color"/>
-        <attr name="hintTextColor" format="color"/>
-        <attr name="translateCardBackgroundColor" format="color"/>
-        <attr name="otherCardsBackgroundColor" format="color"/>
-        <attr name="topPanelBackgroundColor" format="color"/>
-        <attr name="iconSOSPlaceholder" format="integer"/>
-        <attr name="iconPowerPlaceholder" format="integer"/>
-        <attr name="iconMessagePlaceholder" format="integer"/>
-        <attr name="iconBrightnessPlaceholder" format="integer"/>
-        <attr name="iconBulbPlaceholder" format="integer"/>
-        <attr name="iconArrowPlaceholder" format="integer"/>
-        <attr name="iconSwapPlaceholder" format="integer"/>
-        <attr name="iconClosePlaceholder" format="integer"/>
-        <attr name="spinnerDropdownArrowColor" format="color"/>
+        <attr name="primaryTextColor" format="color" />
+        <attr name="secondaryTextColor" format="color" />
+        <attr name="hintTextColor" format="color" />
+        <attr name="translateCardBackgroundColor" format="color" />
+        <attr name="otherCardsBackgroundColor" format="color" />
+        <attr name="topPanelBackgroundColor" format="color" />
+        <attr name="iconSOSPlaceholder" format="integer" />
+        <attr name="iconPowerPlaceholder" format="integer" />
+        <attr name="iconMessagePlaceholder" format="integer" />
+        <attr name="iconBrightnessPlaceholder" format="integer" />
+        <attr name="iconBulbPlaceholder" format="integer" />
+        <attr name="iconArrowPlaceholder" format="integer" />
+        <attr name="iconSwapPlaceholder" format="integer" />
+        <attr name="iconClosePlaceholder" format="integer" />
+        <attr name="iconStarWithBorder" format="integer" />
+        <attr name="iconStarFilled" format="integer" />
+        <attr name="spinnerDropdownArrowColor" format="color" />
     </declare-styleable>
 
 </resources>

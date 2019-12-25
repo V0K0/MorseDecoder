@@ -1,13 +1,13 @@
 package com.morsedecoder.Domain;
 
-import com.morsedecoder.Abstractions.Translator;
-import com.morsedecoder.Abstractions.Vocabulary;
+import com.morsedecoder.InterfacesForTranslations.Translateable;
+import com.morsedecoder.InterfacesForTranslations.Vocabulary;
 
 import java.util.ArrayList;
 
-public class CommonTranslator extends Translator {
-    private Vocabulary vocabulary;
+public class CommonTranslator implements Translateable {
 
+    private Vocabulary vocabulary;
 
     public CommonTranslator(Vocabulary vocabulary) {
         this.vocabulary = vocabulary;
@@ -16,41 +16,39 @@ public class CommonTranslator extends Translator {
     @Override
     public String translateFromMorse(String morseMessage) {
         StringBuilder outputMessage = new StringBuilder();
-        ArrayList<String> list = new  ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
 
         char[] MorseLine = morseMessage.toCharArray();
-        StringBuilder EncryptedLetter = new StringBuilder();
+        StringBuilder encryptedLetter = new StringBuilder();
 
-        for(int i = 0; i < MorseLine.length; i++){
-            if(MorseLine[i] != ' '){
-                EncryptedLetter.append(MorseLine[i]);
-                if (i == MorseLine.length - 1){
-                    list.add(EncryptedLetter.toString());
+        for (int i = 0; i < MorseLine.length; i++) {
+            if (MorseLine[i] != ' ') {
+                encryptedLetter.append(MorseLine[i]);
+                if (i == MorseLine.length - 1) {
+                    list.add(encryptedLetter.toString());
                 }
-            }
-            else if (i != 0 && MorseLine[i] == ' '){
-                list.add(EncryptedLetter.toString());
-                EncryptedLetter = new StringBuilder();
+            } else if (i != 0 && MorseLine[i] == ' ') {
+                list.add(encryptedLetter.toString());
+                encryptedLetter = new StringBuilder();
             }
 
         }
-        for (String ELetter : list) {
-            outputMessage.append(vocabulary.getCharValue(ELetter));
+        for (String eLetter : list) {
+            outputMessage.append(vocabulary.getCharValue(eLetter));
         }
         return outputMessage.toString();
     }
-
 
     @Override
     public String translateInMorse(String message) {
         StringBuilder result = new StringBuilder();
         message = message.toUpperCase();
-        char charArray[] = message.toCharArray();
-        for (int i = 0; i < charArray.length; i++) {
-            if (i != charArray.length - 1) {
-                result.append(vocabulary.getMorseValue(charArray[i]) + " ");
+        char[] messageAsChars = message.toCharArray();
+        for (int i = 0; i < messageAsChars.length; i++) {
+            if (i != messageAsChars.length - 1) {
+                result.append(vocabulary.getMorseValue(messageAsChars[i])).append(" ");
             } else {
-                result.append(vocabulary.getMorseValue(charArray[i]));
+                result.append(vocabulary.getMorseValue(messageAsChars[i]));
             }
         }
         return result.toString();
@@ -59,11 +57,7 @@ public class CommonTranslator extends Translator {
     @Override
     public String getTranslatedMessage(boolean isFromMorse, String msg) {
         String outputMsg;
-        if (isFromMorse){
-            outputMsg = translateFromMorse(msg);
-        } else {
-            outputMsg = translateInMorse(msg);
-        }
+        outputMsg = isFromMorse ? translateFromMorse(msg) : translateInMorse(msg);
         return outputMsg;
     }
 }

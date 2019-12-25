@@ -19,7 +19,7 @@ public final class UserDialogs {
     public static void ShowAlertDialog(Context context, String alertMessage){
         new AlertDialog.Builder(context).setTitle(context.getString(R.string.DEFAULT_ERROR))
                 .setMessage(alertMessage)
-                .setPositiveButton(context.getString(R.string.okey), (dialog, which) -> {
+                .setPositiveButton(context.getString(R.string.ok), (dialog, which) -> {
                 });
     }
 

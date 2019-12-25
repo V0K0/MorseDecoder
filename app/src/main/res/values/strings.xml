@@ -12,7 +12,7 @@
     <string name="sos">SOS</string>
     <string name="ERROR_FLASH">На телефоне отстуствует вспышка!</string>
     <string name="DEFAULT_ERROR">Ошибка!</string>
-    <string name="okey">OK</string>
+    <string name="ok">OK</string>
     <string name="sos_signal_international">… --- …</string>
     <string name="settings_icon">Иконка настроек</string>
     <string name="Night_mode">Ночной режим</string>

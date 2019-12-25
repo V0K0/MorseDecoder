@@ -1,11 +1,11 @@
 package com.morsedecoder.Data;
 
-import com.morsedecoder.Abstractions.Vocabulary;
+import com.morsedecoder.InterfacesForTranslations.Vocabulary;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RussianVocabulary extends Vocabulary {
+public class RussianVocabulary implements Vocabulary {
 
     private char[] symbols = new char[25];
     private char[] russianAlphabet = new char[32];
@@ -114,7 +114,7 @@ public class RussianVocabulary extends Vocabulary {
         morseValuesForRussianAndSymbols[29] = "..-..";
         morseValuesForRussianAndSymbols[30] = "..--";
         morseValuesForRussianAndSymbols[31] = ".-.-";
-        // символы
+        // Symbols
         morseValuesForRussianAndSymbols[32] = ".----"; // = '1';
         morseValuesForRussianAndSymbols[33] = "..---"; // = '2';
         morseValuesForRussianAndSymbols[34] = "...--";  //= '3';

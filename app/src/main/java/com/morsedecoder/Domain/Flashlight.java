@@ -9,17 +9,16 @@ import java.util.ArrayList;
 
 public final class Flashlight {
 
-    private char [] morseSignalChars;
+    private char[] morseSignalChars;
     private Camera camera;
     private Camera.Parameters parameters;
     private FlashThread flashThread;
     private static Flashlight instance;
-    private ArrayList<char []> morseLetters = new ArrayList<>();
+    private ArrayList<char[]> morseLetters = new ArrayList<>();
 
 
-
-    public static Flashlight getInstance(){
-        if(instance == null){
+    public static Flashlight getInstance() {
+        if (instance == null) {
             instance = new Flashlight();
         }
         return instance;
@@ -29,32 +28,28 @@ public final class Flashlight {
         morseSignal = morseSignal + " ";
         convertToCharArraysMessage(morseSignal);
 
-        flashThread =  new FlashThread(morseLetters);
+        flashThread = new FlashThread(morseLetters);
     }
 
-    private void convertToCharArraysMessage(String str){
+    private void convertToCharArraysMessage(String str) {
         morseLetters.clear();
         morseSignalChars = str.toCharArray();
         StringBuilder builder = new StringBuilder();
-        for(int i = 0; i < morseSignalChars.length; i++){
-            if(morseSignalChars[i] != ' '){
-                builder.append(morseSignalChars[i]);
-            }
-            else if (morseSignalChars[i] == ' '){
+        for (char morseSignalChar : morseSignalChars) {
+            if (morseSignalChar != ' ') {
+                builder.append(morseSignalChar);
+            } else if (morseSignalChar == ' ') {
                 morseLetters.add(builder.toString().toCharArray());
                 builder = new StringBuilder();
             }
-
-
         }
     }
 
-    public void interruptFlashThread(){
-        if (flashThread != null && !flashThread.isInterrupted()){
-           flashThread.stopThread();
+    public void interruptFlashThread() {
+        if (flashThread != null && !flashThread.isInterrupted()) {
+            flashThread.stopThread();
         }
     }
-
 
 
     public void setFlashLightOn() {
@@ -65,7 +60,7 @@ public final class Flashlight {
         camera.startPreview();
     }
 
-    public void setFlashLightOff(){
+    public void setFlashLightOff() {
         camera.stopPreview();
         camera.release();
     }

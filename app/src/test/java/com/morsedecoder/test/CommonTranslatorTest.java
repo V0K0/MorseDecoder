@@ -1,5 +1,6 @@
 package com.morsedecoder.test;
 
+import com.morsedecoder.InterfacesForTranslations.Translateable;
 import com.morsedecoder.Data.EnglishVocabulary;
 import com.morsedecoder.Data.RussianVocabulary;
 import com.morsedecoder.Domain.CommonTranslator;
@@ -8,15 +9,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class CommonTranslatorTest {
 
-    private CommonTranslator translatorEng;
-    private CommonTranslator translatorRus;
+    private Translateable translatorEng;
+    private Translateable translatorRus;
 
     @Before
-    public void setTranlators() {
+    public void setTranlaters() {
         translatorEng = new CommonTranslator(new EnglishVocabulary());
         translatorRus = new CommonTranslator(new RussianVocabulary());
     }

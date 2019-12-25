@@ -1,23 +1,20 @@
 package com.morsedecoder.UI.Fragments.Home;
 
 
+import com.morsedecoder.InterfacesForTranslations.Translateable;
 import com.morsedecoder.Data.EnglishVocabulary;
 import com.morsedecoder.Data.RussianVocabulary;
 import com.morsedecoder.Domain.CommonTranslator;
 
-public class HomePresenter implements HomeContract.Presenter{
-
+public class HomePresenter implements HomeContract.Presenter {
 
     private HomeContract.View homeView;
-    private String [] spinnerValues;
-    private CommonTranslator commonTranslator;
-
-
+    private String[] spinnerValues;
+    private Translateable commonTranslator;
 
     public HomePresenter(HomeContract.View homeView) {
         this.homeView = homeView;
     }
-
 
     @Override
     public void onTranslaterChanged() {
@@ -37,22 +34,19 @@ public class HomePresenter implements HomeContract.Presenter{
         }
         if (left.equals(ENG) || right.equals(ENG)) {
             commonTranslator = new CommonTranslator(new EnglishVocabulary());
-        } else if (left.equals(RUS) ||  right.equals(RUS)){
+        } else if (left.equals(RUS) || right.equals(RUS)) {
             commonTranslator = new CommonTranslator(new RussianVocabulary());
         }
 
     }
 
     @Override
-    public String getTranslation(boolean isFromMorse,String text) {
+    public String getTranslation(boolean isFromMorse, String text) {
         String translation = null;
         if (commonTranslator != null) {
             translation = commonTranslator.getTranslatedMessage(isFromMorse, text);
         }
         return translation;
     }
-
-
-
 
 }

@@ -1,11 +1,11 @@
 package com.morsedecoder.Data;
 
-import com.morsedecoder.Abstractions.Vocabulary;
+import com.morsedecoder.InterfacesForTranslations.Vocabulary;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class EnglishVocabulary extends Vocabulary {
+public class EnglishVocabulary implements Vocabulary {
 
     private char[] englishAlphabet = new char[26];
     private char[] symbols = new char[27];
@@ -34,6 +34,7 @@ public class EnglishVocabulary extends Vocabulary {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public char getCharValue(String morseCode) {
         if (morseCode.equals("")) {
@@ -113,7 +114,7 @@ public class EnglishVocabulary extends Vocabulary {
         morseValuesForEnglishAndSymbols[24] = "-.--";
         morseValuesForEnglishAndSymbols[25] = "--..";
 
-        // символы дальше
+        // symbols
 
         morseValuesForEnglishAndSymbols[26] = ".----"; // = '1';
         morseValuesForEnglishAndSymbols[27] = "..---"; // = '2';

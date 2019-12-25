@@ -118,11 +118,16 @@
 
         </RelativeLayout>
 
-
         <include
             android:id="@+id/card"
             layout="@layout/translate_card"
             android:visibility="gone" />
+
+      <!--  <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>-->
+
 
     </LinearLayout>
 

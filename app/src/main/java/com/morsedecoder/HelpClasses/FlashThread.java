@@ -57,11 +57,7 @@ public class FlashThread extends Thread {
     }
 
     private int getTimeOut(char symbol) {
-        if (symbol == '.') {
-            return SHORT_TIMEOUT;
-        } else {
-            return LONG_TIMEOUT;
-        }
+        return symbol == '.' ? SHORT_TIMEOUT : LONG_TIMEOUT;
     }
 
     private void pauseBetweenLetters() {
