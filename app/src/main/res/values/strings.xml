@@ -21,6 +21,9 @@
     <string name="Stay_send_signal_after_block">Продолжать подавать сигнал после блокировки экрана</string>
     <string name="message_request_failed">Сообщение отсутствует!</string>
     <string name="share_through">Поделиться через:</string>
+    <string name="clear_history">Очистить историю</string>
+    <string name="clear_all_notes">Удалить все переводы из базы данных</string>
+    <string name="history_cleared_toast">История очищена</string>
 
     <string-array name="Languages">
         <item>Morse</item>

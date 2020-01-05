@@ -3,16 +3,36 @@ package com.morsedecoder.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.morsedecoder.Data.TranslationResult;
 import com.morsedecoder.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.TranslationViewHolder> {
 
-    // Class will be finished in future commit
+    private List<TranslationResult> translationResults;
+
+    public List<TranslationResult> getTranslationResults() {
+        return translationResults;
+    }
+
+    public void setTranslationResults(List<TranslationResult> translationResults) {
+        this.translationResults = translationResults;
+        notifyDataSetChanged();
+    }
+
+    public TranslationAdapter(List<TranslationResult> translationResults) {
+        this.translationResults = translationResults;
+    }
+
+
 
     @NonNull
     @Override
@@ -23,12 +43,14 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull TranslationViewHolder holder, int position) {
-        // Will be added in future updates
+        TranslationResult result = translationResults.get(position);
+        holder.textViewIn.setText(result.getLanguageIn());
+        holder.textViewFrom.setText(result.getLanguageFrom());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return translationResults.size();
     }
 
 
@@ -36,11 +58,13 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
 
         private TextView textViewFrom;
         private TextView textViewIn;
+       // private ImageView imageViewStar;
 
         public TranslationViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewFrom = itemView.findViewById(R.id.translationFrom);
             textViewIn = itemView.findViewById(R.id.translationIn);
+          //  imageViewStar = itemView.findViewById(R.id.imageViewStar);
         }
     }
 }

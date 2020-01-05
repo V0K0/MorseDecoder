@@ -7,29 +7,46 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.morsedecoder.HelpClasses.UserSettingsItem;
 import com.morsedecoder.R;
 import com.morsedecoder.UI.Activities.Main.MainActivity;
+import com.morsedecoder.UI.Fragments.Home.MainViewModel;
+import com.morsedecoder.adapters.SettingsAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class SettingsFragment extends Fragment {
 
-    private Switch mSwitch;
-    private boolean isSwitchActivated;
-    SharedPreferences sharedPreferences;
+    private final String CLEAR_HISTORY = "Clear history";
+    private final String SET_NIGTH_MODE = "Set night mode";
+    private final String TAG_HISTORY = "history";
+    private final String TAG_SWICTH_MODE = "switch_mode";
+
+
+    private RecyclerView recyclerView;
+    private SettingsAdapter adapter;
+    private List<UserSettingsItem> settingsItems;
+    private MainViewModel viewModel;
+
+    private boolean isNightMode;
+    private SharedPreferences sharedPreferences;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-
-        isSwitchActivated = sharedPreferences.getBoolean("IsNightMode", false);
-
+        sharedPreferences = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
+        isNightMode = sharedPreferences.getBoolean("IsNightMode", false);
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
@@ -38,25 +55,73 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        mSwitch = view.findViewById(R.id.setting_switch);
-        mSwitch.setChecked(isSwitchActivated);
-        mSwitch.setOnCheckedChangeListener(checkedChangeListener);
-
+        recyclerView = view.findViewById(R.id.recyclerViewSettings);
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        addSettings();
+        adapter = new SettingsAdapter(settingsItems);
+        adapter.setOnSettingsIconClickListener(iconClickListener);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
         return view;
     }
 
-    private CompoundButton.OnCheckedChangeListener checkedChangeListener = (buttonView, isChecked) -> {
-        swapTheme(isChecked);
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        Objects.requireNonNull(getActivity()).finish();
-        startActivity(intent);
+    private SettingsAdapter.OnSettingsIconClickListener iconClickListener = new SettingsAdapter.OnSettingsIconClickListener() {
+        @Override
+        public void onIconClick(int position) {
+            UserSettingsItem userSettings = settingsItems.get(position);
+            switch (userSettings.getTag()) {
+                case TAG_HISTORY:
+                    viewModel.deleteAllTranslationsFromDB();
+                    Toast.makeText(getContext(), getString(R.string.history_cleared_toast), Toast.LENGTH_SHORT).show();
+                    break;
+                case TAG_SWICTH_MODE:
+                    swapTheme(!isNightMode);
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    Objects.requireNonNull(getActivity()).finish();
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            }
+        }
     };
+
+
+    private void addSettings() {
+        settingsItems = new ArrayList<>();
+
+        settingsItems.add(new UserSettingsItem(
+                getSettingsIconByCurrentMode(isNightMode, SET_NIGTH_MODE),
+                getString(R.string.Night_mode),
+                getString(R.string.Enable_night_mode),
+                TAG_SWICTH_MODE));
+        settingsItems.add(new UserSettingsItem(
+                getSettingsIconByCurrentMode(isNightMode, CLEAR_HISTORY),
+                getString(R.string.clear_history),
+                getString(R.string.clear_all_notes),
+                TAG_HISTORY));
+
+    }
+
+    private int getSettingsIconByCurrentMode(boolean isNightMode, String settingsLabel) {
+        switch (settingsLabel) {
+            case CLEAR_HISTORY:
+                return isNightMode ? R.drawable.ic_delete_white_40dp : R.drawable.ic_delete_blue_40dp;
+            case SET_NIGTH_MODE:
+                return isNightMode ? R.drawable.ic_brightness_white_50dp : R.drawable.ic_brightness_blue_50dp;
+            default:
+                return 0;
+        }
+    }
+
 
     private void swapTheme(boolean isChecked) {
         if (isChecked) {
             sharedPreferences.edit().putBoolean("IsNightMode", isChecked).apply();
         } else {
-             sharedPreferences.edit().putBoolean("IsNightMode", isChecked).apply();
+            sharedPreferences.edit().putBoolean("IsNightMode", isChecked).apply();
         }
     }
+
+
 }

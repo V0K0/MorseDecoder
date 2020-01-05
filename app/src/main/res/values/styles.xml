@@ -11,6 +11,7 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="topPanelBackgroundColor">@color/white</item>
         <item name="translateCardBackgroundColor">@color/brightBlue</item>
+        <item name="historyItemBackgroundColor">@color/white</item>
         <item name="otherCardsBackgroundColor">@color/white</item>
         <item name="spinnerDropdownArrowColor">@color/brightBlue</item>
 
@@ -21,7 +22,7 @@
         <item name="iconSOSPlaceholder">@drawable/ic_circle_blue_144dp</item>
         <item name="iconMessagePlaceholder">@drawable/ic_mail_blue_144dp</item>
         <item name="iconPowerPlaceholder">@drawable/ic_power_blue_144dp</item>
-        <item name="iconBrightnessPlaceholder">@drawable/ic_brightness_black_50dp</item>
+        <item name="iconBrightnessPlaceholder">@drawable/ic_brightness_blue_50dp</item>
         <item name="iconBulbPlaceholder">@drawable/ic_lightbulb_black_50dp</item>
         <item name="iconArrowPlaceholder">@drawable/ic_arrowright_blue_24dp</item>
         <item name="iconSwapPlaceholder">@drawable/ic_swap_48dp</item>
@@ -43,6 +44,7 @@
         <item name="android:windowBackground">@color/deepDark</item>
         <item name="topPanelBackgroundColor">@color/lightDark</item>
         <item name="translateCardBackgroundColor">@color/lightDark</item>
+        <item name="historyItemBackgroundColor">@color/lightDark</item>
         <item name="otherCardsBackgroundColor">@color/lightDark</item>
         <item name="spinnerDropdownArrowColor">@color/white</item>
 
@@ -68,6 +70,7 @@
         <attr name="hintTextColor" format="color" />
         <attr name="translateCardBackgroundColor" format="color" />
         <attr name="otherCardsBackgroundColor" format="color" />
+        <attr name="historyItemBackgroundColor" format="color"/>
         <attr name="topPanelBackgroundColor" format="color" />
         <attr name="iconSOSPlaceholder" format="integer" />
         <attr name="iconPowerPlaceholder" format="integer" />

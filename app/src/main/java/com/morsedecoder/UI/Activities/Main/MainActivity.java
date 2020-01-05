@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnSe
             case R.id.nav_home:
                 fm.beginTransaction().hide(active).show(fragmentHome).commit();
                 active = fragmentHome;
-                if (input != null) input.requestFocus();
                 break;
             case R.id.nav_signal:
                 fm.beginTransaction().hide(active).show(fragmentSignal).commit();
