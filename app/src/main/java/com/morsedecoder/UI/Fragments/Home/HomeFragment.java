@@ -6,18 +6,14 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.transition.TransitionSet;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,7 +36,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.morsedecoder.Data.TranslationResult;
 import com.morsedecoder.HelpClasses.Keyboard;
@@ -53,38 +48,46 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnItemSelected;
+import butterknife.OnTextChanged;
+import butterknife.Unbinder;
+
 public class HomeFragment extends Fragment implements SignalFragment.OnSendRequest {
 
-    private TableLayout topPanel;
-    private LinearLayout mainPanel;
-    private CardView card;
-    private BottomNavigationView bottomNavigationView;
-    private Spinner leftSpinner;
-    private Spinner rightSpinner;
-    private PopupMenu popupMenu;
-    private EditText editText;
-    private TextView translateLine;
-    private TextView cardText;
-    private ImageButton clearButton;
-    private ImageButton goButton;
-    private ImageButton dropDownCardButton;
-    private ImageButton copyCardButton;
-    private ImageButton swapButton;
+    @BindView(R.id.topPanel) TableLayout topPanel;
+    @BindView(R.id.Content_container) LinearLayout mainPanel;
+    @BindView(R.id.card) CardView card;
+    @BindView(R.id.leftSpinner) Spinner leftSpinner;
+    @BindView(R.id.rightSpinner) Spinner rightSpinner;
+    @BindView(R.id.editTextUserInput) EditText editText;
+    @BindView(R.id.translateLine) TextView translateLine;
+    @BindView(R.id.resultTranslation) TextView cardText;
+    @BindView(R.id.clearButton) ImageButton clearButton;
+    @BindView(R.id.goButton) ImageButton goButton;
+    @BindView(R.id.cardMenuButton) ImageButton dropDownCardButton;
+    @BindView(R.id.cardCopyButton) ImageButton copyCardButton;
+    @BindView(R.id.swapButton) ImageButton swapButton;
+    @BindView(R.id.recyclerViewHistory) RecyclerView recyclerView;
 
-    private SharedPreferences sharedPreferences;
+    private Unbinder unbinder;
+
     private MainViewModel viewModel;
     private TranslationAdapter adapter;
     private final List<TranslationResult> translations = new ArrayList<>();
-    private RecyclerView recyclerView;
+
     private ActionBar actionBar;
 
     private boolean isNightMode;
 
     private OnSendSignal onSendSignal;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        sharedPreferences = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
         isNightMode = sharedPreferences.getBoolean("IsNightMode", false);
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
@@ -98,33 +101,9 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
 
         actionBar = ((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar();
 
-        topPanel = view.findViewById(R.id.topPanel);
-        mainPanel = view.findViewById(R.id.Content_container);
-        card = view.findViewById(R.id.card);
-        cardText = view.findViewById(R.id.cardResult);
-        translateLine = view.findViewById(R.id.translateLine);
-        swapButton = view.findViewById(R.id.swapButton);
-        clearButton = view.findViewById(R.id.cancelButton);
-        goButton = view.findViewById(R.id.goButton);
-        copyCardButton = view.findViewById(R.id.cardCopy);
-        dropDownCardButton = view.findViewById(R.id.dropDownCardMenu);
-        editText = view.findViewById(R.id.TextInputArea);
-        leftSpinner = view.findViewById(R.id.leftSpinner);
-        rightSpinner = view.findViewById(R.id.rightSpinner);
+        unbinder = ButterKnife.bind(this, view);
+
         bottomNavigationView = Objects.requireNonNull(getActivity()).findViewById(R.id.bottom_navigation);
-        recyclerView = view.findViewById(R.id.recyclerViewHistory);
-
-        // editText.requestFocus();
-
-        swapButton.setOnClickListener(swapClickListener);
-        clearButton.setOnClickListener(clearClickListener);
-        goButton.setOnClickListener(goClickListener);
-        copyCardButton.setOnClickListener(copyClickListener);
-        dropDownCardButton.setOnClickListener(dropdownClickListener);
-        rightSpinner.setOnItemSelectedListener(changedSelection);
-        leftSpinner.setOnItemSelectedListener(changedSelection);
-        editText.addTextChangedListener(watcher);
-        editText.setOnClickListener(editTextClick);
 
         setCustomAdaptersForSpinners();
         rightSpinner.setSelection(0);
@@ -138,7 +117,6 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
         recyclerView.setAdapter(adapter);
 
 
-
         ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -147,7 +125,7 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-               deleteFocusedTranslation(viewHolder.getAdapterPosition());
+                deleteFocusedTranslation(viewHolder.getAdapterPosition());
             }
         });
 
@@ -180,14 +158,16 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
         onSendSignal.sendMessageSignal(message);
     }
 
-    private ImageButton.OnClickListener swapClickListener = (View v) -> {
+    @OnClick(R.id.swapButton)
+    void onSwapClick(View v) {
         v.animate().rotation(v.getRotation() + 180).setDuration(500).start();
         int pos = leftSpinner.getSelectedItemPosition();
         leftSpinner.setSelection(rightSpinner.getSelectedItemPosition());
         rightSpinner.setSelection(pos);
-    };
+    }
 
-    private ImageButton.OnClickListener clearClickListener = (View v) -> {
+    @OnClick(R.id.clearButton)
+    void onClearClick(View v) {
         Animation clickAnim = AnimationUtils.loadAnimation(getContext(), R.anim.click_button_effect);
         String text = editText.getText().toString();
         if (!text.isEmpty()) {
@@ -197,9 +177,10 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
             cardText.setText("");
             setInitialView();
         }
-    };
+    }
 
-    private ImageButton.OnClickListener goClickListener = (View v) -> {
+    @OnClick(R.id.goButton)
+    void goClickListener() {
         if (!translateLine.getText().toString().trim().isEmpty()) {
             TranslationResult result = new TranslationResult(editText.getText().toString(), translateLine.getText().toString());
             cardText.setText(translateLine.getText());
@@ -210,9 +191,10 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
             setInitialView();
             editText.setText("");
         }
-    };
+    }
 
-    private ImageButton.OnClickListener copyClickListener = (View v) -> {
+    @OnClick(R.id.cardCopyButton)
+    void copyClickListener() {
         if (cardText.getText() != null) {
             String text = cardText.getText().toString().trim();
             ClipboardManager clipManager = (ClipboardManager) Objects.requireNonNull(getActivity()).getSystemService(Context.CLIPBOARD_SERVICE);
@@ -222,7 +204,7 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
                 Toast.makeText(getContext(), getResources().getString(R.string.successCopied), Toast.LENGTH_SHORT).show();
             }
         }
-    };
+    }
 
     private PopupMenu.OnMenuItemClickListener clickListener = (MenuItem item) -> {
         switch (item.getItemId()) {
@@ -247,40 +229,30 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
         }
 
     };
-    private ImageButton.OnClickListener dropdownClickListener = (View v) -> {
-        popupMenu = new PopupMenu(getContext(), v);
+
+    @OnClick(R.id.cardMenuButton)
+    void onDropdownClick(View v) {
+        PopupMenu popupMenu = new PopupMenu(getContext(), v);
         MenuInflater inflater = popupMenu.getMenuInflater();
         inflater.inflate(R.menu.card_menu, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(clickListener);
         popupMenu.show();
-    };
+    }
 
-    private Spinner.OnItemSelectedListener changedSelection = new Spinner.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            viewModel.onTranslaterChanged(getContext(), getSpinnersValues());
-        }
+    @OnItemSelected({R.id.leftSpinner, R.id.rightSpinner})
+    void onChangedSelection() {
+        viewModel.onTranslaterChanged(getContext(), getSpinnersValues());
+    }
 
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        }
-    };
+    @OnTextChanged(R.id.editTextUserInput)
+    void onTextChanged() {
+        String translatedMessage = viewModel.getTranslatedMessage(isFromMorse(), editText.getText().toString().trim());
+        translateLine.setText(translatedMessage);
+    }
 
-    private  TextWatcher watcher = new TextWatcher() {
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String translatedMessage = viewModel.getTranslatedMessage(isFromMorse(), editText.getText().toString().trim());
-            translateLine.setText(translatedMessage);
-        }
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };
 
-    private EditText.OnClickListener editTextClick = (View v) -> {
+    @OnClick(R.id.editTextUserInput)
+    void onEditTextClick() {
         if (topPanel.getVisibility() == View.VISIBLE) {
             Animation slideTop = AnimationUtils.loadAnimation(getContext(), R.anim.topslide_effect);
             slideTop.setAnimationListener(new Animation.AnimationListener() {
@@ -303,10 +275,9 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
                 public void onAnimationRepeat(Animation animation) {
                 }
             });
-
             mainPanel.startAnimation(slideTop);
         }
-    };
+    }
 
     private void setInitialView() {
         Activity activity = Objects.requireNonNull(getActivity());
@@ -344,6 +315,12 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
         String left = leftSpinner.getSelectedItem().toString();
         String Morse = getResources().getStringArray(R.array.Languages)[0];
         return left.equals(Morse);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
 }

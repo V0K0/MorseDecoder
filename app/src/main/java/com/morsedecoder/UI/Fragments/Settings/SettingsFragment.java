@@ -27,6 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class SettingsFragment extends Fragment {
 
     private final String CLEAR_HISTORY = "Clear history";
@@ -35,13 +39,17 @@ public class SettingsFragment extends Fragment {
     private final String TAG_SWICTH_MODE = "switch_mode";
 
 
-    private RecyclerView recyclerView;
+
+   @BindView(R.id.recyclerViewSettings) RecyclerView recyclerView;
     private SettingsAdapter adapter;
+
     private List<UserSettingsItem> settingsItems;
     private MainViewModel viewModel;
 
     private boolean isNightMode;
     private SharedPreferences sharedPreferences;
+
+    private Unbinder unbinder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,13 +63,18 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        recyclerView = view.findViewById(R.id.recyclerViewSettings);
+
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+
+        unbinder = ButterKnife.bind(this, view);
+
         addSettings();
+
         adapter = new SettingsAdapter(settingsItems);
         adapter.setOnSettingsIconClickListener(iconClickListener);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+
         return view;
     }
 
@@ -95,6 +108,7 @@ public class SettingsFragment extends Fragment {
                 getString(R.string.Night_mode),
                 getString(R.string.Enable_night_mode),
                 TAG_SWICTH_MODE));
+
         settingsItems.add(new UserSettingsItem(
                 getSettingsIconByCurrentMode(isNightMode, CLEAR_HISTORY),
                 getString(R.string.clear_history),
@@ -123,5 +137,9 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

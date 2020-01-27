@@ -21,16 +21,24 @@ import com.morsedecoder.R;
 
 import java.util.Objects;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
 public class SignalFragment extends Fragment {
 
-    private ImageView imageViewSOS;
-    private ImageView imageViewPower;
-    private ImageView imageViewMessage;
+    @BindView(R.id.imageViewSos) ImageView imageViewSOS;
+    @BindView(R.id.imageViewPower) ImageView imageViewPower;
+    @BindView(R.id.imageViewMessage) ImageView imageViewMessage;
+
     private BottomNavigationView bottomMenu;
     private OnSendRequest onSendRequest;
 
     private boolean isActive = false;
     private int powerDefaultIconRes;
+
+    private Unbinder unbinder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,13 +50,8 @@ public class SignalFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_signal, container, false);
-        imageViewSOS = view.findViewById(R.id.imageViewSos);
-        imageViewPower = view.findViewById(R.id.imageViewPower);
-        imageViewMessage = view.findViewById(R.id.imageViewMessage);
+        unbinder = ButterKnife.bind(this, view);
         bottomMenu = Objects.requireNonNull(getActivity()).findViewById(R.id.bottom_navigation);
-        imageViewPower.setOnClickListener(onPowerClick);
-        imageViewSOS.setOnClickListener(onSOSClick);
-        imageViewMessage.setOnClickListener(onRequestMessageClick);
         powerDefaultIconRes = getResources().getIdentifier(imageViewPower.toString(), "drawable", getActivity().getPackageName());
 
         return view;
@@ -75,13 +78,15 @@ public class SignalFragment extends Fragment {
         String requestMessage();
     }
 
-    private ImageView.OnClickListener onPowerClick = (View view) -> {
+    @OnClick(R.id.imageViewPower)
+    void onPowerClick() {
         if (isActive) {
             stopWork();
         }
-    };
+    }
 
-    private ImageView.OnClickListener onRequestMessageClick = (View view) -> {
+   @OnClick(R.id.imageViewMessage)
+   void onRequestMessageClick  ()  {
         if (!isActive && onSendRequest != null) {
             String message = onSendRequest.requestMessage();
             if (message != null && !message.isEmpty()) {
@@ -90,9 +95,10 @@ public class SignalFragment extends Fragment {
                 Toast.makeText(getContext(), getString(R.string.message_request_failed), Toast.LENGTH_SHORT).show();
             }
         }
-    };
+    }
 
-    private ImageView.OnClickListener onSOSClick = (View view) -> {
+    @OnClick(R.id.imageViewSos)
+    void onSOSClick() {
         if (!isActive) {
             isActive = true;
             imageViewPower.setImageResource(R.drawable.ic_power_off_144dp);
@@ -103,7 +109,7 @@ public class SignalFragment extends Fragment {
                 Flashlight.getInstance().sendSignal("... --- ...");
             }
         }
-    };
+    }
 
     private void stopWork() {
         isActive = false;
@@ -117,5 +123,11 @@ public class SignalFragment extends Fragment {
         if (isActive) {
             stopWork();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

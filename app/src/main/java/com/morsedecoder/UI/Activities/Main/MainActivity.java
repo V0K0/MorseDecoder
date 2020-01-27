@@ -2,14 +2,10 @@ package com.morsedecoder.UI.Activities.Main;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.Manifest;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.widget.EditText;
@@ -25,12 +21,13 @@ import com.morsedecoder.R;
 public class MainActivity extends AppCompatActivity implements HomeFragment.OnSendSignal, SignalFragment.OnSendRequest {
 
     private BottomNavigationView bottomNav;
+
     private final HomeFragment fragmentHome = new HomeFragment();
     private final SignalFragment fragmentSignal = new SignalFragment();
     private final SettingsFragment fragmentSettings = new SettingsFragment();
     private final FragmentManager fm = getSupportFragmentManager();
-    private Fragment active = fragmentSettings;
-    private EditText input;
+
+    private Fragment active;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +48,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnSe
             bar.setElevation(0);
         }
 
-
-        input = findViewById(R.id.TextInputArea);
         bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
         changeBottomNavigationTint(isDarkMode);
