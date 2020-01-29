@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnSe
     private final SettingsFragment fragmentSettings = new SettingsFragment();
     private final FragmentManager fm = getSupportFragmentManager();
 
-    private Fragment active;
+    private Fragment active = fragmentSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -8,19 +8,30 @@ import androidx.room.PrimaryKey;
 public class TranslationResult  {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    private long timeCreated;
     private String languageFrom;
     private String languageIn;
 
     public TranslationResult(int id, String languageFrom, String languageIn) {
         this.id = id;
-        this.languageFrom = languageFrom;
-        this.languageIn = languageIn;
+        this.languageFrom = languageFrom.trim().toLowerCase();
+        this.languageIn = languageIn.trim().toLowerCase();
+        timeCreated = (System.currentTimeMillis() / 1000L);
     }
 
     @Ignore
     public TranslationResult(String languageFrom, String languageIn) {
-        this.languageFrom = languageFrom;
-        this.languageIn = languageIn;
+        this.languageFrom = languageFrom.trim().toLowerCase();
+        this.languageIn = languageIn.trim().toLowerCase();
+        timeCreated = (System.currentTimeMillis() / 1000L);
+    }
+
+    public long getTimeCreated() {
+        return timeCreated;
+    }
+
+    public void setTimeCreated(long timeCreated) {
+        this.timeCreated = (timeCreated / 1000L);
     }
 
     public int getId() {

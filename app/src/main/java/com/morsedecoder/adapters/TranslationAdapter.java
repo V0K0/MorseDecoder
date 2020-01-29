@@ -15,6 +15,9 @@ import com.morsedecoder.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.TranslationViewHolder> {
 
     private List<TranslationResult> translationResults;
@@ -56,15 +59,13 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
 
     public class TranslationViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textViewFrom;
-        private TextView textViewIn;
-       // private ImageView imageViewStar;
+       @BindView(R.id.translationFrom) TextView textViewFrom;
+       @BindView(R.id.translationIn)  TextView textViewIn;
+      // IN FUTURE UPDATES @BindView(R.id.imageViewStar) ImageView imageViewStar;
 
         public TranslationViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewFrom = itemView.findViewById(R.id.translationFrom);
-            textViewIn = itemView.findViewById(R.id.translationIn);
-          //  imageViewStar = itemView.findViewById(R.id.imageViewStar);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

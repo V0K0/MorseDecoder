@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
 
     private MainViewModel viewModel;
     private TranslationAdapter adapter;
-    private final List<TranslationResult> translations = new ArrayList<>();
+    private List<TranslationResult> translations = new ArrayList<>();
 
     private ActionBar actionBar;
 
@@ -185,13 +185,28 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
             TranslationResult result = new TranslationResult(editText.getText().toString(), translateLine.getText().toString());
             cardText.setText(translateLine.getText());
             setInitialView();
-            viewModel.insertTranslationInDB(result);
+            if (!translationExists(result)){
+                viewModel.insertTranslationInDB(result);
+            }
             card.setVisibility(View.VISIBLE);
         } else {
             setInitialView();
             editText.setText("");
         }
     }
+
+    private boolean translationExists(TranslationResult result){
+        for (TranslationResult translation : translations){
+            if (translation.getLanguageFrom().equals(result.getLanguageFrom())){
+                translation.setTimeCreated(System.currentTimeMillis());
+                viewModel.updateTranslation(translation);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     @OnClick(R.id.cardCopyButton)
     void copyClickListener() {
@@ -301,7 +316,10 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
 
     private void getDataInAdapter() {
         LiveData<List<TranslationResult>> history = viewModel.getTranslationHistory();
-        history.observe(this, translationResults -> adapter.setTranslationResults(translationResults));
+        history.observe(this, translationResults -> {
+            adapter.setTranslationResults(translationResults);
+            translations = translationResults;
+        });
     }
 
     private String[] getSpinnersValues() {

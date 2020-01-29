@@ -27,7 +27,7 @@ public class MainViewModel extends AndroidViewModel {
     public MainViewModel(@NonNull Application application) {
         super(application);
         database = TranslationsDatabase.getInstance(getApplication());
-        translationHistory = database.translationDao().getAlltranlationHistory();
+        translationHistory = database.translationDao().getAllTranlationHistory();
     }
 
     public LiveData<List<TranslationResult>> getTranslationHistory() {
@@ -36,6 +36,10 @@ public class MainViewModel extends AndroidViewModel {
 
     public void insertTranslationInDB(TranslationResult translationResult){
         new InsertTranslationTask().execute(translationResult);
+    }
+
+    public void updateTranslation(TranslationResult translationResult){
+        new UpdateTranslationTask().execute(translationResult);
     }
 
     public void deleteTranslationFromDB(TranslationResult translationResult){
@@ -87,6 +91,17 @@ public class MainViewModel extends AndroidViewModel {
             return null;
         }
     }
+
+    private static class UpdateTranslationTask extends AsyncTask<TranslationResult, Void, Void>{
+        @Override
+        protected Void doInBackground(TranslationResult... translationResults) {
+            if(translationResults!= null && translationResults.length != 0){
+                database.translationDao().updateTranslation(translationResults[0]);
+            }
+            return null;
+        }
+    }
+
 
     private static class DeleteTranslationTask extends AsyncTask<TranslationResult, Void, Void>{
         @Override

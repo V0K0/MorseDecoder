@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {TranslationResult.class}, version = 1, exportSchema = false)
+@Database(entities = {TranslationResult.class}, version = 4, exportSchema = false)
 public abstract class TranslationsDatabase extends RoomDatabase {
 
     private static TranslationsDatabase database;

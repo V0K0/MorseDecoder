@@ -15,6 +15,9 @@ import com.morsedecoder.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.SettingsViewHolder> {
 
     private List<UserSettingsItem> settingsItems;
@@ -66,15 +69,13 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
 
     class SettingsViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView settingsIcon;
-        private TextView settingsLabel;
-        private TextView settingsDescription;
+        @BindView(R.id.settings_icon) ImageView settingsIcon;
+        @BindView(R.id.title_of_setting) TextView settingsLabel;
+        @BindView(R.id.desc_of_setting) TextView settingsDescription;
 
         public SettingsViewHolder(@NonNull View itemView) {
             super(itemView);
-            settingsIcon = itemView.findViewById(R.id.settings_icon);
-            settingsLabel = itemView.findViewById(R.id.title_of_setting);
-            settingsDescription = itemView.findViewById(R.id.desc_of_setting);
+            ButterKnife.bind(this, itemView);
             settingsIcon.setOnClickListener(v -> {
                 if (onSettingsIconClickListener != null) {
                     onSettingsIconClickListener.onIconClick(getAdapterPosition());
