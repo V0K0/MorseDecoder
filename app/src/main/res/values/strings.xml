@@ -24,6 +24,8 @@
     <string name="clear_history">Очистить историю</string>
     <string name="clear_all_notes">Удалить все переводы из базы данных</string>
     <string name="history_cleared_toast">История очищена</string>
+    <string name="help">Помощь</string>
+    <string name="favourite_translates">Избранные переводы</string>
 
     <string-array name="Languages">
         <item>Morse</item>

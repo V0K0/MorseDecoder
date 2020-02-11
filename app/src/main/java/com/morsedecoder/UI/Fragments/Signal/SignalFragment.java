@@ -1,6 +1,7 @@
 package com.morsedecoder.UI.Fragments.Signal;
 
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +54,6 @@ public class SignalFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         bottomMenu = Objects.requireNonNull(getActivity()).findViewById(R.id.bottom_navigation);
         powerDefaultIconRes = getResources().getIdentifier(imageViewPower.toString(), "drawable", getActivity().getPackageName());
-
         return view;
     }
 

@@ -10,7 +10,7 @@ import androidx.lifecycle.LiveData;
 
 import com.morsedecoder.Data.EnglishVocabulary;
 import com.morsedecoder.Data.RussianVocabulary;
-import com.morsedecoder.Data.TranslationResult;
+import com.morsedecoder.Data.TranslationResultItem;
 import com.morsedecoder.Data.TranslationsDatabase;
 import com.morsedecoder.Domain.CommonTranslator;
 import com.morsedecoder.R;
@@ -21,28 +21,28 @@ public class MainViewModel extends AndroidViewModel {
 
     private final int SPINNERS_COUNT = 2;
     private static TranslationsDatabase database;
-    private LiveData<List<TranslationResult>> translationHistory;
+    private LiveData<List<TranslationResultItem>> translationHistory;
     private CommonTranslator commonTranslator;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
         database = TranslationsDatabase.getInstance(getApplication());
-        translationHistory = database.translationDao().getAllTranlationHistory();
+        translationHistory = database.translationDao().getAllTranslationHistory();
     }
 
-    public LiveData<List<TranslationResult>> getTranslationHistory() {
+    public LiveData<List<TranslationResultItem>> getTranslationHistory() {
         return translationHistory;
     }
 
-    public void insertTranslationInDB(TranslationResult translationResult){
+    public void insertTranslationInDB(TranslationResultItem translationResult){
         new InsertTranslationTask().execute(translationResult);
     }
 
-    public void updateTranslation(TranslationResult translationResult){
+    public void updateTranslation(TranslationResultItem translationResult){
         new UpdateTranslationTask().execute(translationResult);
     }
 
-    public void deleteTranslationFromDB(TranslationResult translationResult){
+    public void deleteTranslationFromDB(TranslationResultItem translationResult){
         new DeleteTranslationTask().execute(translationResult);
     }
 
@@ -82,9 +82,9 @@ public class MainViewModel extends AndroidViewModel {
        }
     }
 
-    private static class InsertTranslationTask extends AsyncTask<TranslationResult, Void, Void>{
+    private static class InsertTranslationTask extends AsyncTask<TranslationResultItem, Void, Void>{
         @Override
-        protected Void doInBackground(TranslationResult... translationResults) {
+        protected Void doInBackground(TranslationResultItem... translationResults) {
             if(translationResults!= null && translationResults.length != 0){
                 database.translationDao().insertUserTranslation(translationResults[0]);
             }
@@ -92,9 +92,9 @@ public class MainViewModel extends AndroidViewModel {
         }
     }
 
-    private static class UpdateTranslationTask extends AsyncTask<TranslationResult, Void, Void>{
+    private static class UpdateTranslationTask extends AsyncTask<TranslationResultItem, Void, Void>{
         @Override
-        protected Void doInBackground(TranslationResult... translationResults) {
+        protected Void doInBackground(TranslationResultItem... translationResults) {
             if(translationResults!= null && translationResults.length != 0){
                 database.translationDao().updateTranslation(translationResults[0]);
             }
@@ -103,9 +103,9 @@ public class MainViewModel extends AndroidViewModel {
     }
 
 
-    private static class DeleteTranslationTask extends AsyncTask<TranslationResult, Void, Void>{
+    private static class DeleteTranslationTask extends AsyncTask<TranslationResultItem, Void, Void>{
         @Override
-        protected Void doInBackground(TranslationResult... translationResults) {
+        protected Void doInBackground(TranslationResultItem... translationResults) {
             if(translationResults!= null && translationResults.length != 0){
                 database.translationDao().deleteTranslation(translationResults[0]);
             }

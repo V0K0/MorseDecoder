@@ -1,5 +1,6 @@
 package com.morsedecoder.adapters;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.morsedecoder.Data.TranslationResult;
+import com.morsedecoder.Data.TranslationResultItem;
 import com.morsedecoder.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -20,22 +20,31 @@ import butterknife.ButterKnife;
 
 public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.TranslationViewHolder> {
 
-    private List<TranslationResult> translationResults;
+    private List<TranslationResultItem> translationResults;
+    private boolean showIcon;
+    private OnAddToFavouriteClickListener onAddToFavouriteClickListener;
 
-    public List<TranslationResult> getTranslationResults() {
-        return translationResults;
+    public TranslationAdapter(List<TranslationResultItem> translationResults, boolean showIcon) {
+        this.translationResults = translationResults;
+        this.showIcon = showIcon;
     }
 
-    public void setTranslationResults(List<TranslationResult> translationResults) {
+    public interface OnAddToFavouriteClickListener {
+        void onAddToFavourite(int position);
+    }
+
+    public void setOnAddToFavouriteClickListener(OnAddToFavouriteClickListener onAddToFavouriteClickListener) {
+        this.onAddToFavouriteClickListener = onAddToFavouriteClickListener;
+    }
+
+    public void setTranslationResults(List<TranslationResultItem> translationResults) {
         this.translationResults = translationResults;
         notifyDataSetChanged();
     }
 
-    public TranslationAdapter(List<TranslationResult> translationResults) {
-        this.translationResults = translationResults;
+    public List<TranslationResultItem> getTranslationResults() {
+        return translationResults;
     }
-
-
 
     @NonNull
     @Override
@@ -46,9 +55,11 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull TranslationViewHolder holder, int position) {
-        TranslationResult result = translationResults.get(position);
-        holder.textViewIn.setText(result.getLanguageIn());
-        holder.textViewFrom.setText(result.getLanguageFrom());
+        TranslationResultItem result = translationResults.get(position);
+        holder.textViewIn.setText(result.getMessageAfterTranslation());
+        holder.textViewFrom.setText(result.getMessageBeforeTranslation());
+        int resId = result.isFavourite() ? R.drawable.ic_star_yellow_40dp : holder.starDefaultResId;
+        holder.imageViewStar.setImageResource(resId);
     }
 
     @Override
@@ -57,15 +68,30 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
     }
 
 
-    public class TranslationViewHolder extends RecyclerView.ViewHolder {
+    class TranslationViewHolder extends RecyclerView.ViewHolder {
 
-       @BindView(R.id.translationFrom) TextView textViewFrom;
-       @BindView(R.id.translationIn)  TextView textViewIn;
-      // IN FUTURE UPDATES @BindView(R.id.imageViewStar) ImageView imageViewStar;
+        @BindView(R.id.translationFrom)
+        TextView textViewFrom;
+        @BindView(R.id.translationIn)
+        TextView textViewIn;
+        @BindView(R.id.imageViewStar)
+        ImageView imageViewStar;
+        private int starDefaultResId;
 
-        public TranslationViewHolder(@NonNull View itemView) {
+        TranslationViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            starDefaultResId = Resources.getSystem().getIdentifier(imageViewStar.toString(), "drawable", itemView.getContext().getPackageName());
+            if (showIcon){
+                imageViewStar.setVisibility(View.VISIBLE);
+            } else {
+                imageViewStar.setVisibility(View.INVISIBLE);
+            }
+            imageViewStar.setOnClickListener(v -> {
+                if (onAddToFavouriteClickListener != null) {
+                    onAddToFavouriteClickListener.onAddToFavourite(getAdapterPosition());
+                }
+            });
         }
     }
 }

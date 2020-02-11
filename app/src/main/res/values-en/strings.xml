@@ -25,4 +25,6 @@
     <string name="clear_history">Clear history</string>
     <string name="clear_all_notes">Delete all translation`s history from DB</string>
     <string name="history_cleared_toast">History has been cleared</string>
+    <string name="help">Help</string>
+    <string name="favourite_translates">Favourites</string>
 </resources>

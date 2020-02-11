@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -37,7 +36,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.morsedecoder.Data.TranslationResult;
+import com.morsedecoder.Data.TranslationResultItem;
 import com.morsedecoder.HelpClasses.Keyboard;
 import com.morsedecoder.HelpClasses.UserDialogs;
 import com.morsedecoder.R;
@@ -56,6 +55,8 @@ import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 
 public class HomeFragment extends Fragment implements SignalFragment.OnSendRequest {
+
+    private final static String THEME_KEY = "IsNightMode";
 
     @BindView(R.id.topPanel) TableLayout topPanel;
     @BindView(R.id.Content_container) LinearLayout mainPanel;
@@ -76,7 +77,7 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
 
     private MainViewModel viewModel;
     private TranslationAdapter adapter;
-    private List<TranslationResult> translations = new ArrayList<>();
+    private List<TranslationResultItem> translations = new ArrayList<>();
 
     private ActionBar actionBar;
 
@@ -85,10 +86,10 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
     private OnSendSignal onSendSignal;
     private BottomNavigationView bottomNavigationView;
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
-        isNightMode = sharedPreferences.getBoolean("IsNightMode", false);
+        isNightMode = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(THEME_KEY, false);
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
@@ -111,31 +112,38 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
-        adapter = new TranslationAdapter(translations);
+        adapter = new TranslationAdapter(translations, true);
+        adapter.setOnAddToFavouriteClickListener(onAddToFavourite);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         getDataInAdapter();
         recyclerView.setAdapter(adapter);
 
-
-        ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                deleteFocusedTranslation(viewHolder.getAdapterPosition());
-            }
-        });
-
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
 
         return view;
     }
 
+    private ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            deleteFocusedTranslation(viewHolder.getAdapterPosition());
+        }
+    };
+
+    private TranslationAdapter.OnAddToFavouriteClickListener onAddToFavourite = position -> {
+        TranslationResultItem translationToAdd = translations.get(position);
+        boolean inverted = !translationToAdd.isFavourite();
+        translationToAdd.setFavourite(inverted);
+        viewModel.updateTranslation(translationToAdd);
+    };
+
     private void deleteFocusedTranslation(int adapterPosition) {
-        TranslationResult focused = adapter.getTranslationResults().get(adapterPosition);
+        TranslationResultItem focused = adapter.getTranslationResults().get(adapterPosition);
         viewModel.deleteTranslationFromDB(focused);
     }
 
@@ -182,7 +190,7 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
     @OnClick(R.id.goButton)
     void goClickListener() {
         if (!translateLine.getText().toString().trim().isEmpty()) {
-            TranslationResult result = new TranslationResult(editText.getText().toString(), translateLine.getText().toString());
+            TranslationResultItem result = new TranslationResultItem(editText.getText().toString(), translateLine.getText().toString());
             cardText.setText(translateLine.getText());
             setInitialView();
             if (!translationExists(result)){
@@ -195,10 +203,10 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
         }
     }
 
-    private boolean translationExists(TranslationResult result){
-        for (TranslationResult translation : translations){
-            if (translation.getLanguageFrom().equals(result.getLanguageFrom())){
-                translation.setTimeCreated(System.currentTimeMillis());
+    private boolean translationExists(TranslationResultItem result){
+        for (TranslationResultItem translation : translations){
+            if (translation.getMessageBeforeTranslation().equals(result.getMessageBeforeTranslation())){
+                translation.setTimeCreated(System.currentTimeMillis()/1000L);
                 viewModel.updateTranslation(translation);
                 return true;
             }
@@ -315,7 +323,7 @@ public class HomeFragment extends Fragment implements SignalFragment.OnSendReque
     }
 
     private void getDataInAdapter() {
-        LiveData<List<TranslationResult>> history = viewModel.getTranslationHistory();
+        LiveData<List<TranslationResultItem>> history = viewModel.getTranslationHistory();
         history.observe(this, translationResults -> {
             adapter.setTranslationResults(translationResults);
             translations = translationResults;

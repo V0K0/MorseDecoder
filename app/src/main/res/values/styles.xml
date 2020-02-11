@@ -19,6 +19,7 @@
         <item name="secondaryTextColor">@color/brightBlue</item>
         <item name="hintTextColor">@android:color/tertiary_text_dark</item>
 
+
         <item name="iconSOSPlaceholder">@drawable/ic_circle_blue_144dp</item>
         <item name="iconMessagePlaceholder">@drawable/ic_mail_blue_144dp</item>
         <item name="iconPowerPlaceholder">@drawable/ic_power_blue_144dp</item>
@@ -51,7 +52,6 @@
         <item name="primaryTextColor">@color/white</item>
         <item name="secondaryTextColor">@color/white</item>
         <item name="hintTextColor">@android:color/tertiary_text_dark</item>
-
         <item name="iconSOSPlaceholder">@drawable/ic_circle_dark_144dp</item>
         <item name="iconMessagePlaceholder">@drawable/ic_mail_dark_144dp</item>
         <item name="iconPowerPlaceholder">@drawable/ic_power_dark_144dp</item>

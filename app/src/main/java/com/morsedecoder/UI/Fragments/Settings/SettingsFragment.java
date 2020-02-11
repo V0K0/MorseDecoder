@@ -37,8 +37,7 @@ public class SettingsFragment extends Fragment {
     private final String SET_NIGTH_MODE = "Set night mode";
     private final String TAG_HISTORY = "history";
     private final String TAG_SWICTH_MODE = "switch_mode";
-
-
+    private final static String THEME_KEY = "IsNightMode";
 
    @BindView(R.id.recyclerViewSettings) RecyclerView recyclerView;
     private SettingsAdapter adapter;
@@ -47,14 +46,12 @@ public class SettingsFragment extends Fragment {
     private MainViewModel viewModel;
 
     private boolean isNightMode;
-    private SharedPreferences sharedPreferences;
 
     private Unbinder unbinder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        sharedPreferences = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
-        isNightMode = sharedPreferences.getBoolean("IsNightMode", false);
+        isNightMode = getActivity().getPreferences(Context.MODE_PRIVATE).getBoolean(THEME_KEY, false);
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
@@ -130,11 +127,7 @@ public class SettingsFragment extends Fragment {
 
 
     private void swapTheme(boolean isChecked) {
-        if (isChecked) {
-            sharedPreferences.edit().putBoolean("IsNightMode", isChecked).apply();
-        } else {
-            sharedPreferences.edit().putBoolean("IsNightMode", isChecked).apply();
-        }
+        getActivity().getPreferences(Context.MODE_PRIVATE).edit().putBoolean(THEME_KEY, isChecked).apply();
     }
 
     @Override

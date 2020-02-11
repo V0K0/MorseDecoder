@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {TranslationResult.class}, version = 4, exportSchema = false)
+@Database(entities = {TranslationResultItem.class}, version = 7, exportSchema = false)
 public abstract class TranslationsDatabase extends RoomDatabase {
 
     private static TranslationsDatabase database;
@@ -16,7 +16,7 @@ public abstract class TranslationsDatabase extends RoomDatabase {
     public static TranslationsDatabase getInstance(Context context){
         synchronized (LOCK){
             if (database == null){
-                database = Room.databaseBuilder(context, TranslationsDatabase.class, DB_NAME).build();
+                database = Room.databaseBuilder(context, TranslationsDatabase.class, DB_NAME).fallbackToDestructiveMigration().build();
             }
         }
         return database;
